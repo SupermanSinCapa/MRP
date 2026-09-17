@@ -83,8 +83,18 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-sand-50/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="font-heading text-xl font-semibold">
-            MRP Supply <span className="text-sage-600">LLC</span>
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="MRP Supply LLC"
+              width={40}
+              height={44}
+              className="rounded-md bg-white object-contain p-0.5 shadow-sm ring-1 ring-border"
+              priority
+            />
+            <span className="font-heading text-xl font-semibold">
+              MRP Supply <span className="text-sage-600">LLC</span>
+            </span>
           </Link>
           <nav className="flex items-center gap-6 text-sm">
             <Link
@@ -116,7 +126,15 @@ export default async function Home() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="mx-auto max-w-6xl px-6 py-24 text-center md:py-32">
+        <section className="mx-auto max-w-6xl px-6 py-20 text-center md:py-28">
+          <Image
+            src="/logo.png"
+            alt="MRP Supply LLC"
+            width={137}
+            height={150}
+            className="mx-auto mb-10 rounded-2xl bg-white object-contain p-2 shadow-md ring-1 ring-border"
+            priority
+          />
           <Badge
             variant="secondary"
             className="mb-6 rounded-full border border-sage-300 bg-sage-50 px-4 py-1 text-sm font-medium text-sage-700"

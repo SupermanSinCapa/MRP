@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PackageOpen } from "lucide-react";
+import Image from "next/image";
 import { SignOutButton } from "@/components/admin/sign-out-button";
 
 export default function AdminLayout({
@@ -13,9 +13,14 @@ export default function AdminLayout({
             href="/admin/products"
             className="flex items-center gap-3 font-heading text-lg font-semibold"
           >
-            <span className="flex size-9 items-center justify-center rounded-lg bg-sage-100">
-              <PackageOpen className="size-4.5 text-sage-700" />
-            </span>
+            <Image
+              src="/logo.png"
+              alt="MRP Supply LLC"
+              width={33}
+              height={36}
+              className="rounded-lg bg-white object-contain p-0.5 shadow-sm ring-1 ring-border"
+              priority
+            />
             MRP Supply
             <span className="text-xs font-normal uppercase tracking-widest text-muted-foreground">
               admin

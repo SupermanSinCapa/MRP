@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogIn } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -51,8 +51,15 @@ export default function AdminLoginPage() {
     <main className="flex min-h-screen items-center justify-center p-6">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-sage-100">
-            <LogIn className="size-5 text-sage-700" />
+          <div className="mx-auto mb-3 flex justify-center">
+            <Image
+              src="/logo.png"
+              alt="MRP Supply LLC"
+              width={95}
+              height={104}
+              className="rounded-xl bg-white object-contain p-1 shadow-sm ring-1 ring-border"
+              priority
+            />
           </div>
           <CardTitle className="font-heading text-2xl">MRP Supply</CardTitle>
           <CardDescription>Sign in to manage the catalog</CardDescription>
