@@ -3,7 +3,17 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isSupabaseConfigured } from "./config";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isLoginPage = pathname.startsWith("/admin/login");
+
   if (!isSupabaseConfigured()) {
+    // Without Supabase credentials nobody can authenticate, so keep the
+    // admin panel locked and let the login page explain the situation.
+    if (!isLoginPage) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
     return NextResponse.next({ request });
   }
 
@@ -33,9 +43,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-  const isLoginPage = pathname.startsWith("/admin/login");
 
   if (!user && !isLoginPage) {
     const url = request.nextUrl.clone();
