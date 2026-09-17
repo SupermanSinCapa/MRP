@@ -2,9 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { type Product, formatPrice } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+export const dynamic = "force-dynamic";
 
 async function getActiveProducts(): Promise<Product[]> {
   try {
@@ -62,12 +65,19 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 export default async function Home() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  let products: Product[] = [];
 
-  const products = await getActiveProducts();
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+      products = await getActiveProducts();
+    } catch (error) {
+      console.error("Supabase error on landing:", error);
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col">

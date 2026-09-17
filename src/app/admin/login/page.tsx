@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,9 +20,11 @@ import { Label } from "@/components/ui/label";
 export default function AdminLoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const configured = isSupabaseConfigured();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!configured) return;
     const formData = new FormData(e.currentTarget);
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
@@ -55,7 +58,8 @@ export default function AdminLoginPage() {
           <CardDescription>Sign in to manage the catalog</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {configured ? (
+            <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -81,6 +85,11 @@ export default function AdminLoginPage() {
               {loading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
+          ) : (
+            <p className="text-center text-sm text-muted-foreground">
+              The service is not configured yet. Check back later.
+            </p>
+          )}
         </CardContent>
       </Card>
     </main>
