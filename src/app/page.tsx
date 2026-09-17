@@ -120,13 +120,6 @@ export default async function Home() {
             <Button
               asChild
               size="lg"
-              className="rounded-full px-8 text-base"
-            >
-              <Link href="#catalog">Browse the catalog</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
               variant="outline"
               className="rounded-full px-8 text-base"
             >

@@ -9,10 +9,7 @@ export default function AdminLayout({
     <div className="flex min-h-screen flex-col bg-sand-50">
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link
-            href="/admin/products"
-            className="flex items-center gap-3 font-heading text-lg font-semibold"
-          >
+          <Link href="/" className="flex items-center gap-3 font-heading text-lg font-semibold">
             <Image
               src="/logo.png"
               alt="MRP Supply LLC"
