@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 export default function AdminLoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const configured = isSupabaseConfigured();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -31,20 +32,35 @@ export default function AdminLoginPage() {
 
     const supabase = createClient();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    setLoading(false);
+    setError(null);
 
-    if (error) {
-      toast.error("Invalid credentials", {
-        description: "Check the email and password and try again.",
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
+
+      if (signInError) {
+        const message =
+          signInError.message === "Email not confirmed"
+            ? "The email is not confirmed. Ask the administrator to enable Auto Confirm for this user."
+            : "Invalid email or password. Try again.";
+        setError(message);
+        toast.error(message);
+        return;
+      }
+    } catch {
+      const message = "Connection error. Check your internet and try again.";
+      setError(message);
+      toast.error(message);
       return;
+    } finally {
+      setLoading(false);
     }
 
-    router.push("/admin/products");
+    // Full navigation so the server-side guard sees the new session cookies.
+    router.replace("/admin/products");
+    router.refresh();
   }
 
   return (
@@ -91,6 +107,14 @@ export default function AdminLoginPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign in"}
             </Button>
+            {error && (
+              <p
+                role="alert"
+                className="rounded-md bg-destructive/10 px-3 py-2 text-center text-sm text-destructive"
+              >
+                {error}
+              </p>
+            )}
           </form>
           ) : (
             <p className="text-center text-sm text-muted-foreground">
