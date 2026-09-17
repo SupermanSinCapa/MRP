@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, Store } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import { type Product, formatPrice } from "@/lib/types";
+import { type Product } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/product-card";
 
 export const dynamic = "force-dynamic";
 
@@ -27,41 +28,6 @@ async function getActiveProducts(): Promise<Product[]> {
     console.error("Error fetching products:", error);
     return [];
   }
-}
-
-function ProductCard({ product }: { product: Product }) {
-  const cover = product.photos[0];
-
-  return (
-    <article className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
-      <div className="relative aspect-square overflow-hidden bg-sage-100">
-        {cover ? (
-          <Image
-            src={cover}
-            alt={product.name}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-sage-400">
-            <Store className="size-12" strokeWidth={1.5} />
-          </div>
-        )}
-      </div>
-      <div className="space-y-2 p-5">
-        <h3 className="font-heading text-lg font-semibold">{product.name}</h3>
-        {product.description && (
-          <p className="line-clamp-2 text-sm text-muted-foreground">
-            {product.description}
-          </p>
-        )}
-        <p className="font-heading text-xl font-semibold text-terracota-600">
-          {formatPrice(Number(product.price))}
-        </p>
-      </div>
-    </article>
-  );
 }
 
 export default async function Home() {
